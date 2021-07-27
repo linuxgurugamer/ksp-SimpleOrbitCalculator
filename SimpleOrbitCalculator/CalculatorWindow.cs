@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using ClickThroughFix;
 
 namespace SimpleOrbitCalculator
 {
@@ -49,7 +50,7 @@ namespace SimpleOrbitCalculator
         {
             if (isWindowOpen)
             {
-                windowPosition = GUILayout.Window(id, windowPosition, RenderWindow, WindowTitle);
+                windowPosition =ClickThruBlocker.GUILayoutWindow(id, windowPosition, RenderWindow, WindowTitle);
             }
         }
 

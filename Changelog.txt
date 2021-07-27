@@ -1,0 +1,45 @@
+Changelog
+
+1.6.0
+	Adoption by Linuxgurugamer
+	Updated for KSP 1.12
+	Added version file
+	Added ToolbarController
+	Added ClickthroughBlocker
+
+v1.5.0
+- The revival of SOC!
+- KSP 1.2.2 compatibility update. No feature updates.
+
+v1.4.0
+- Celestial body info mode added!
+- Orbit calculation now will display minimum ideal delta-V to launch to or land from calculated orbit, not including atmospheric drag.
+- Parent body SOI moved to celestial body info mode.
+- New warnings for orbits calculated to be outside of SOI or that intersect the planet.
+- Users with Blizzy's Toolbar can now use the stock toolbar instead (requires restart).
+
+v1.3.1
+- Previous release included wrong DLL, this has been fixed.
+
+v1.3.0
+- While in flight scenes, can use your target's orbit as input.
+- Blizzy's Toolbar support.
+- Calculations, inputs and window location now persist between window closings and scene changes.
+- Recursive search to order celestial bodies (this allows moons of moons and deeper... moon-ception, thanks OPM).
+
+v1.2.0
+- Can save calculated orbits to calculate the Hohmann transfer delta-v.
+- While in flight scenes, can use your active vessel's orbit as input.
+- Code cleanup for the AppLauncher stuff (thanks for the help stupid_chris!).
+- Code cleanup overall.
+
+v1.1.1
+- KSP 1.0 compatibility update.
+
+v1.1.0
+- Darkness time is now the longest amount of time that could be possibly spent in darkness (was originally assuming a circular orbit).
+- Removed restrictions regarding hyperbolic trajectories (may result in some weird output numbers).
+- Some code cleanup to prepare for future input values.
+
+v1.0.0
+- Initial release for KSP 0.90.

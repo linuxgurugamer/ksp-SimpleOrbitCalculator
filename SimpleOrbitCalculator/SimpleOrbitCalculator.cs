@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using KSP.UI.Screens;
 using UnityEngine;
+using ToolbarControl_NS;
 
 namespace SimpleOrbitCalculator
 {
-    [KSPAddon(KSPAddon.Startup.MainMenu, true)]
+    [KSPAddon(KSPAddon.Startup.SpaceCentre, true)]
     public class SimpleOrbitCalculatorController : MonoBehaviour
     {
         /// <summary>
@@ -31,96 +32,42 @@ namespace SimpleOrbitCalculator
         private const string PluginIconButtonBlizzy = "icon_button_blizzy";
 
         /// <summary>
-        /// The application launcher button that is created.
+        /// The ToolbarController object that is created.
         /// </summary>
-        private static ApplicationLauncherButton appLauncherButton = null;
-
-        /// <summary>
-        /// The Blizzy's Toolbar button that is created.
-        /// </summary>
-        private static IButton blizzyToolbarButton = null;
+        private static ToolbarControl toolbarControl = null;
 
         /// <summary>
         /// The calculator object that is created.
         /// </summary>
         private static GameObject calculator;
 
-        /// <summary>
-        /// Is the window open? Really only used for Blizzy's toolbar.
-        /// </summary>
-        private static bool isWindowOpen = false;
+        internal const string MODID = "SOC_NS";
+        internal const string MODNAME = PluginName;
 
-        /// <summary>
-        /// Tells plugin to use Blizzy's toolbar if it is available.
-        /// </summary>
-        private static bool UseBlizzyToolbar
-        {
-            get
-            {
-                return ToolbarManager.ToolbarAvailable && !SOCSettings.Instance.ForceStockToolbar;
-            }
-        }
 
-        /// <summary>
-        /// The scenes the button will be visible in.
-        /// </summary>
-        private static ApplicationLauncher.AppScenes ScenesApplicationVisibleIn
-        {
-            get
-            {
-                return ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW | ApplicationLauncher.AppScenes.SPACECENTER
-                        | ApplicationLauncher.AppScenes.SPH | ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB;
-            }
-        }
-        
         /// <summary>
         /// Called when the script is loaded.
         /// </summary>
-        public void Awake()
+        public void Start()
         {
-            if (UseBlizzyToolbar)
+            if (toolbarControl == null)
             {
-                blizzyToolbarButton = ToolbarManager.Instance.add("SimpleOrbitCalculator", "mainWindow");
-                blizzyToolbarButton.Visibility = new GameScenesVisibility(GameScenes.EDITOR, GameScenes.SPACECENTER, GameScenes.TRACKSTATION, GameScenes.FLIGHT);
-                blizzyToolbarButton.TexturePath = String.Format("{0}/Textures/{1}", PluginDirectoryName, PluginIconButtonBlizzy);
-                blizzyToolbarButton.ToolTip = PluginName;
-                blizzyToolbarButton.OnClick += (e) =>
-                {
-                    if (isWindowOpen) OnAppLaunchToggleOff();
-                    else OnAppLaunchToggleOn();
-                };
+                Debug.Log("SOC: SimpleorbitCalculator.Awake");
+
+                toolbarControl = gameObject.AddComponent<ToolbarControl>();
+                toolbarControl.AddToAllToolbars(OnAppLaunchToggleOn, OnAppLaunchToggleOff,
+                   ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW | ApplicationLauncher.AppScenes.SPACECENTER
+                        | ApplicationLauncher.AppScenes.SPH | ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
+                    MODID,
+                    "socButton",
+                    String.Format("{0}/Textures/{1}", PluginDirectoryName, PluginIconButtonStock),
+                     String.Format("{0}/Textures/{1}", PluginDirectoryName, PluginIconButtonBlizzy),
+                    MODNAME
+                );
             }
-            else
-            {
-                GameEvents.onGUIApplicationLauncherReady.Add(AddAppLauncherButton);
-                GameEvents.onGUIApplicationLauncherDestroyed.Add(RemoveAppLauncherButton);
-            }
+            DontDestroyOnLoad(this);
         }
 
-        /// <summary>
-        /// Called to add the application to the stock toolbar.
-        /// </summary>
-        private void AddAppLauncherButton()
-        {
-            if (ApplicationLauncher.Ready && appLauncherButton == null)
-            {
-                string pluginIconButtonStockPath = String.Format("{0}/Textures/{1}", PluginDirectoryName, PluginIconButtonStock);
-                appLauncherButton = ApplicationLauncher.Instance.AddModApplication(
-                    OnAppLaunchToggleOn, OnAppLaunchToggleOff,
-                    null, null,
-                    null, null,
-                    ScenesApplicationVisibleIn,
-                    (Texture)GameDatabase.Instance.GetTexture(pluginIconButtonStockPath, false));
-            }
-        }
-
-        /// <summary>
-        /// Removes the application from the stock toolbar.
-        /// </summary>
-        private void RemoveAppLauncherButton()
-        {
-            ApplicationLauncher.Instance.RemoveApplication(appLauncherButton);
-        }
 
         /// <summary>
         /// Sets the window as open. Should only be called by a button.
@@ -128,7 +75,6 @@ namespace SimpleOrbitCalculator
         private void OnAppLaunchToggleOn()
         {
             calculator = new GameObject("SOCWindow", typeof(CalculatorWindow));
-            isWindowOpen = true;
         }
 
         /// <summary>
@@ -137,7 +83,6 @@ namespace SimpleOrbitCalculator
         private void OnAppLaunchToggleOff()
         {
             Destroy(calculator);
-            isWindowOpen = false;
         }
 
         /// <summary>
@@ -145,11 +90,7 @@ namespace SimpleOrbitCalculator
         /// </summary>
         public static void SetApplauncherButtonFalse()
         {
-            if (appLauncherButton != null)
-            {
-                appLauncherButton.SetFalse();
-            }
-            isWindowOpen = false;
+            toolbarControl.SetFalse();
         }
     }
 }
