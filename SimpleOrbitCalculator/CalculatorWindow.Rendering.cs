@@ -165,7 +165,7 @@ namespace SimpleOrbitCalculator
             lockPeriod = GUILayout.Toggle(lockSMA ? false : lockPeriod, "Orbital Period (s)", GUILayout.Width(LockWidth), GUILayout.ExpandWidth(false));
             if (!lockPeriod) GUI.enabled = false;
             periodText = GUILayout.TextField(periodText, GUILayout.Width(InputWidth - CharButtonWidth - 4), GUILayout.ExpandWidth(false));
-            if (GUILayout.Button("S", GUILayout.Width(CharButtonWidth), GUILayout.ExpandWidth(false)))
+            if (GUILayout.Button("Rotation Period of " + celestialSelectValues[selectedCelestialIndex]))
             {
                 periodText = celestialBodies[selectedCelestialIndex].rotationPeriod.ToString();
             }

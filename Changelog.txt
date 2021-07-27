@@ -1,5 +1,10 @@
 Changelog
 
+1.6.0.1
+	Fixed display of Orbital Period not displaying data when period was huge
+	Now displayes correct periods based on homeworlds orbit (was previously using Earth standard)
+	Adds new dependency of SpaceTuxLibrary
+
 1.6.0
 	Adoption by Linuxgurugamer
 	Updated for KSP 1.12

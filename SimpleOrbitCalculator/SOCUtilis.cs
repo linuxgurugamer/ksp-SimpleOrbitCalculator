@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
+using SpaceTuxUtility;
 
 namespace SimpleOrbitCalculator
 {
@@ -63,16 +65,18 @@ namespace SimpleOrbitCalculator
 
                 // Time will be displayed as days, hours, minutes and seconds.
                 case SimpleOrbit.ScalerType.Time:
+
+                    return Format_Time.FormatTime(input, 0, true, true);
+#if false
                     string output = (input < 0) ? "-" : "";
                     int seconds = (int)Math.Round(Math.Abs(input));
                     TimeSpan span = new TimeSpan(0, 0, seconds);
-
                     if (span.Days > 0) output += span.Days + "d ";
                     if (span.Hours > 0) output += span.Hours + "h ";
                     if (span.Minutes > 0) output += span.Minutes + "m ";
                     if (span.Seconds > 0) output += span.Seconds + "s ";
                     return output.Trim();
-
+#endif
                 // Specific Energy will be 3 decimal and in joules per kilograms.
                 case SimpleOrbit.ScalerType.SpecificEnergy:
                     return string.Format("{0:0.###} J/kg", input);
@@ -91,6 +95,7 @@ namespace SimpleOrbitCalculator
                     return ParseOrbitElement(input);
             }
         }
+
 
         /// <summary>
         /// Finds the primary planet of the system the celestial body is part of.
